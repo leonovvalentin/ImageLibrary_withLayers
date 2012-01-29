@@ -7,11 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <UIScrollViewDelegate, NSCacheDelegate>
 
-@property (strong, nonatomic) id detailItem;
+@property (retain, nonatomic) NSMutableArray *imageLayerArray;
+@property (retain, nonatomic) NSMutableArray *thumbnailArray;
+@property (retain, nonatomic) NSArray *imageNameArray;
+@property (retain, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property (strong, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (retain, nonatomic) CALayer *leftLayer;
+@property (retain, nonatomic) CALayer *currentLayer;
+@property (retain, nonatomic) CALayer *rightLayer;
+
+- (void) showImageLayersWithCurrentLayerNumber: (NSInteger)number;
 
 @end

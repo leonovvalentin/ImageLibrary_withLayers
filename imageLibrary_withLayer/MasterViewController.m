@@ -11,22 +11,65 @@
 #import "DetailViewController.h"
 
 @implementation MasterViewController
+{
+    NSArray *_imageNameArray;
+    __block NSMutableArray *_thumbnailArray;
+}
 
 @synthesize detailViewController = _detailViewController;
+
+NSInteger const THUMBNAIL_WIDTH = 32;
+NSInteger const THUMBNAIL_HEIGHT = 48;
+
+- (void)dealloc
+{
+    [_imageNameArray release], _imageNameArray = nil;
+    [_thumbnailArray release], _thumbnailArray = nil;
+    [_detailViewController release], _detailViewController = nil;
+    [super dealloc];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Master", @"Master");
+        
+        // Thumbnail create
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *imageFolderPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingString:@"/Images"];
+        _imageNameArray = [[fileManager contentsOfDirectoryAtPath:imageFolderPath
+                                                            error:nil] retain];
+        _thumbnailArray = [[NSMutableArray alloc] initWithCapacity:_imageNameArray.count];
+        UIImage *noImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"noImage.jpg"
+                                                                                            ofType:nil
+                                                                                       inDirectory:@"auxiliaryImages"]];
+        for (NSInteger i=0; i<_imageNameArray.count; i++) {
+            [_thumbnailArray addObject:noImage];
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void){
+                UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:[_imageNameArray objectAtIndex:i]
+                                                                                                  ofType:nil
+                                                                                             inDirectory:@"Images"]];
+                CGSize destinationSize = CGSizeMake(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+                
+                UIGraphicsBeginImageContext(destinationSize);
+                [image drawInRect:CGRectMake(0, 0, destinationSize.width, destinationSize.height)];
+                UIImage *thumbnail = UIGraphicsGetImageFromCurrentImageContext();
+                [_thumbnailArray replaceObjectAtIndex:i withObject:thumbnail]; 
+                UIGraphicsEndImageContext();
+                
+                dispatch_async(dispatch_get_main_queue(), ^(void){
+                    [self.tableView reloadData];
+                    [self.detailViewController.thumbnailArray replaceObjectAtIndex:i withObject:thumbnail];
+                    CALayer *layer = [self.detailViewController.imageLayerArray objectAtIndex:i];
+                    layer.contents = (id)[thumbnail CGImage];
+                });
+            });
+        }
+
     }
     return self;
-}
-							
-- (void)dealloc
-{
-    [_detailViewController release];
-    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,7 +127,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return _imageNameArray.count;
 }
 
 // Customize the appearance of table view cells.
@@ -99,7 +142,9 @@
     }
 
     // Configure the cell.
-    cell.textLabel.text = NSLocalizedString(@"Detail", @"Detail");
+    cell.textLabel.text = [_imageNameArray objectAtIndex:indexPath.row];
+    cell.imageView.image = [_thumbnailArray objectAtIndex:indexPath.row];
+    
     return cell;
 }
 
@@ -145,7 +190,11 @@
 {
     if (!self.detailViewController) {
         self.detailViewController = [[[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil] autorelease];
+        self.detailViewController.thumbnailArray = _thumbnailArray;
+        self.detailViewController.imageNameArray = _imageNameArray;
     }
+    
+    [self.detailViewController showImageLayersWithCurrentLayerNumber:indexPath.row];    
     [self.navigationController pushViewController:self.detailViewController animated:YES];
 }
 
