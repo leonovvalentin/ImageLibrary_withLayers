@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		842BF3BD14D5C7190022F13D /* auxiliaryImages in Resources */ = {isa = PBXBuildFile; fileRef = 842BF3BB14D5C7190022F13D /* auxiliaryImages */; };
+		842BF3BE14D5C7190022F13D /* Images in Resources */ = {isa = PBXBuildFile; fileRef = 842BF3BC14D5C7190022F13D /* Images */; };
 		FF2CB25D14B6AF4D0069169D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CB25C14B6AF4D0069169D /* UIKit.framework */; };
 		FF2CB25F14B6AF4D0069169D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CB25E14B6AF4D0069169D /* Foundation.framework */; };
 		FF2CB26114B6AF4D0069169D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CB26014B6AF4D0069169D /* CoreGraphics.framework */; };
@@ -17,25 +19,29 @@
 		FF2CB27314B6AF4D0069169D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2CB27214B6AF4D0069169D /* DetailViewController.m */; };
 		FF2CB27614B6AF4D0069169D /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF2CB27414B6AF4D0069169D /* MasterViewController.xib */; };
 		FF2CB27914B6AF4D0069169D /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF2CB27714B6AF4D0069169D /* DetailViewController.xib */; };
+		FF2CB28814B6B1050069169D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF2CB28714B6B1050069169D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		842BF3BB14D5C7190022F13D /* auxiliaryImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = auxiliaryImages; sourceTree = "<group>"; };
+		842BF3BC14D5C7190022F13D /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 		FF2CB25814B6AF4D0069169D /* imageLibrary_withLayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = imageLibrary_withLayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF2CB25C14B6AF4D0069169D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF2CB25E14B6AF4D0069169D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FF2CB26014B6AF4D0069169D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		FF2CB26414B6AF4D0069169D /* imageLibrary_withLayer-Info.plist */ = {isa = PBXFileReference; path = "imageLibrary_withLayer-Info.plist"; sourceTree = "<group>"; };
+		FF2CB26414B6AF4D0069169D /* imageLibrary_withLayer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "imageLibrary_withLayer-Info.plist"; sourceTree = "<group>"; };
 		FF2CB26614B6AF4D0069169D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FF2CB26814B6AF4D0069169D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FF2CB26A14B6AF4D0069169D /* imageLibrary_withLayer-Prefix.pch */ = {isa = PBXFileReference; path = "imageLibrary_withLayer-Prefix.pch"; sourceTree = "<group>"; };
-		FF2CB26B14B6AF4D0069169D /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		FF2CB26A14B6AF4D0069169D /* imageLibrary_withLayer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "imageLibrary_withLayer-Prefix.pch"; sourceTree = "<group>"; };
+		FF2CB26B14B6AF4D0069169D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		FF2CB26C14B6AF4D0069169D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		FF2CB26E14B6AF4D0069169D /* MasterViewController.h */ = {isa = PBXFileReference; path = MasterViewController.h; sourceTree = "<group>"; };
+		FF2CB26E14B6AF4D0069169D /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
 		FF2CB26F14B6AF4D0069169D /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		FF2CB27114B6AF4D0069169D /* DetailViewController.h */ = {isa = PBXFileReference; path = DetailViewController.h; sourceTree = "<group>"; };
+		FF2CB27114B6AF4D0069169D /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		FF2CB27214B6AF4D0069169D /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		FF2CB27514B6AF4D0069169D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MasterViewController.xib; sourceTree = "<group>"; };
 		FF2CB27814B6AF4D0069169D /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/DetailViewController.xib; sourceTree = "<group>"; };
+		FF2CB28714B6B1050069169D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF2CB28814B6B1050069169D /* QuartzCore.framework in Frameworks */,
 				FF2CB25D14B6AF4D0069169D /* UIKit.framework in Frameworks */,
 				FF2CB25F14B6AF4D0069169D /* Foundation.framework in Frameworks */,
 				FF2CB26114B6AF4D0069169D /* CoreGraphics.framework in Frameworks */,
@@ -55,6 +62,8 @@
 		FF2CB24D14B6AF4D0069169D = {
 			isa = PBXGroup;
 			children = (
+				842BF3BB14D5C7190022F13D /* auxiliaryImages */,
+				842BF3BC14D5C7190022F13D /* Images */,
 				FF2CB26214B6AF4D0069169D /* imageLibrary_withLayer */,
 				FF2CB25B14B6AF4D0069169D /* Frameworks */,
 				FF2CB25914B6AF4D0069169D /* Products */,
@@ -72,6 +81,7 @@
 		FF2CB25B14B6AF4D0069169D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FF2CB28714B6B1050069169D /* QuartzCore.framework */,
 				FF2CB25C14B6AF4D0069169D /* UIKit.framework */,
 				FF2CB25E14B6AF4D0069169D /* Foundation.framework */,
 				FF2CB26014B6AF4D0069169D /* CoreGraphics.framework */,
@@ -159,6 +169,8 @@
 				FF2CB26714B6AF4D0069169D /* InfoPlist.strings in Resources */,
 				FF2CB27614B6AF4D0069169D /* MasterViewController.xib in Resources */,
 				FF2CB27914B6AF4D0069169D /* DetailViewController.xib in Resources */,
+				842BF3BD14D5C7190022F13D /* auxiliaryImages in Resources */,
+				842BF3BE14D5C7190022F13D /* Images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +302,7 @@
 				FF2CB27E14B6AF4D0069169D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
