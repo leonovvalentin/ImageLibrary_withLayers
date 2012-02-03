@@ -19,6 +19,8 @@
 - (void) asyncLoadLayersWithCurrentLayerNumber:(NSInteger)number leftLayer:(CALayer *)leftLayer currentLayer:(CALayer *)currentLayer rightLayer:(CALayer *)rightLayer;
 - (UIImage *) resizeImageNumber:(NSInteger) number;
 
+- (void) handleDoubleTap;
+
 @end
 
 @implementation DetailViewController
@@ -35,15 +37,18 @@
     BOOL _fromMainPage;
     
     __block NSCache *_imageCache;
+    
+    UITapGestureRecognizer *_doubleTap;
 }
 
 CGFloat const SCALE_COEFFICIENT = 0.5;
-NSInteger const IMAGE_WIDTH = 320*SCALE_COEFFICIENT;
-NSInteger const IMAGE_HEIGHT = 480*SCALE_COEFFICIENT;
-NSInteger const BORDER_WIDTH = 2;
-NSInteger const NEXT_IMAGE_OFFSET = 7;
-NSInteger const CURRENT_LAYER_Z_OFFSET = IMAGE_WIDTH / 2;
-NSInteger const GROUP_IMAGE_SIZE = 36;
+CGFloat const IMAGE_WIDTH = 320*SCALE_COEFFICIENT;
+CGFloat const IMAGE_HEIGHT = 480*SCALE_COEFFICIENT;
+CGFloat const BORDER_WIDTH = 2;
+CGFloat const NEXT_IMAGE_OFFSET = 7;
+CGFloat CURRENT_LAYER_Z_OFFSET_1 = IMAGE_WIDTH / 3;
+CGFloat CURRENT_LAYER_Z_OFFSET_2 = IMAGE_WIDTH / 1.25;
+CGFloat const GROUP_IMAGE_SIZE = 36;
 CGFloat const ROTATION_ANGLE = M_PI / 6;
 
 @synthesize imageLayerArray = _imageLayerArray;
@@ -77,6 +82,8 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
     self.leftLayer = nil;
     self.currentLayer = nil;
     self.rightLayer = nil;
+    [_imageCache release], _imageCache = nil;
+    [_doubleTap release], _doubleTap = nil;
     [super dealloc];
 }
 
@@ -158,7 +165,7 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
     layer = self.currentLayer;
     layer.transform = CATransform3DIdentity;        
     layer.frame = CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-    layer.zPosition = CURRENT_LAYER_Z_OFFSET;
+    layer.zPosition = CURRENT_LAYER_Z_OFFSET_1;
     layer.position = self.view.center;
     
     // debug
@@ -221,7 +228,7 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
     layer = self.currentLayer;
     layer.transform = CATransform3DIdentity;        
     layer.frame = CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-    layer.zPosition = CURRENT_LAYER_Z_OFFSET;
+    layer.zPosition = CURRENT_LAYER_Z_OFFSET_1;
     layer.position = self.view.center;
 }
 
@@ -317,7 +324,7 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
         UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:[_imageNameArray objectAtIndex:number]
                                                                                           ofType:nil
                                                                                      inDirectory:@"Images"]];
-        CGSize destinationSize = CGSizeMake(IMAGE_WIDTH, IMAGE_HEIGHT);
+        CGSize destinationSize = CGSizeMake(IMAGE_WIDTH / SCALE_COEFFICIENT, IMAGE_HEIGHT / SCALE_COEFFICIENT);
         
         UIGraphicsBeginImageContext(destinationSize);
         [image drawInRect:CGRectMake(0, 0, destinationSize.width, destinationSize.height)];
@@ -337,7 +344,7 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
     CALayer *layer = [[[CALayer alloc] init] autorelease];
     layer.contents = (id)[[self.thumbnailArray objectAtIndex:number] CGImage];
     layer.frame = CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-    layer.zPosition = CURRENT_LAYER_Z_OFFSET;
+    layer.zPosition = CURRENT_LAYER_Z_OFFSET_1;
     layer.position = self.view.center;
     layer.borderWidth = BORDER_WIDTH;
     layer.borderColor = [UIColor blackColor].CGColor;
@@ -367,7 +374,6 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
     CALayer *layer = [[[CALayer alloc] init] autorelease];
     layer.contents = (id)[[self.thumbnailArray objectAtIndex:number] CGImage];
     layer.frame = CGRectMake(self.view.bounds.size.width - IMAGE_WIDTH - GROUP_IMAGE_SIZE/_rightImageCount*(self.thumbnailArray.count-1) + GROUP_IMAGE_SIZE/_rightImageCount*number, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-    
     layer.transform = CATransform3DRotate(CATransform3DIdentity, -ROTATION_ANGLE, 0, 1, 0);
     layer.position = CGPointMake(layer.position.x, self.view.center.y);
     layer.borderWidth = BORDER_WIDTH;
@@ -434,9 +440,28 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
     layer.contents = (id)[[self.thumbnailArray objectAtIndex:number] CGImage];
 }
 
+- (void) handleDoubleTap
+{
+    if (self.currentLayer.zPosition == CURRENT_LAYER_Z_OFFSET_1)
+    {
+        self.currentLayer.zPosition = CURRENT_LAYER_Z_OFFSET_2;
+//        _currentLayerOnFullScreen = YES;
+    }
+    else
+    {
+        self.currentLayer.zPosition = CURRENT_LAYER_Z_OFFSET_1;
+//        _currentLayerOnFullScreen = NO;
+    }
+    
+    // Swap zOffsets
+    CGFloat zOffset = CURRENT_LAYER_Z_OFFSET_1;
+    CURRENT_LAYER_Z_OFFSET_1 = CURRENT_LAYER_Z_OFFSET_2;
+    CURRENT_LAYER_Z_OFFSET_2 = zOffset;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    _imageCache.delegate  =self;
+    _imageCache.delegate = self;
     _fromMainPage = YES;
     
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -446,6 +471,13 @@ CGFloat const ROTATION_ANGLE = M_PI / 6;
         CATransform3D transform = self.view.layer.transform;
         transform.m34 = 1.0 / -300.0;
         self.view.layer.sublayerTransform = transform;
+        
+        _imageCache = [[NSCache alloc] init];
+        
+        _doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                             action:@selector(handleDoubleTap)];
+        _doubleTap.numberOfTapsRequired = 2;
+        [self.view addGestureRecognizer:_doubleTap];
     }
     
     return self;
